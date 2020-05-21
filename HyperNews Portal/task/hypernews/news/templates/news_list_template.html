@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All news</title>
+</head>
+<body>
+    <h2>Hyper news</h2>
+    <form method="get">{% csrf_token %}
+        <p>News search:</p>
+        <input type="text" name="q" size="50">
+        <button type="submit">Search</button>
+    </form>
+    {% regroup news_array|dictsortreversed:"created" by created|slice:":10" as news_list %}
+    {% for created in news_list %}
+        <h4>{{ created.grouper }}</h4>
+        <ul>
+            {% for news in created.list %}
+                <li><a href="/news/{{ news.link }}/">{{ news.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    <br>
+    <a href="/news/create/">Create</a>
+</body>
+</html>
